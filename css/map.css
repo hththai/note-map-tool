@@ -33,6 +33,7 @@
 .detail .body{margin:10px 0 0;white-space:pre-wrap;font-size:14px}
 .detail .body.empty{color:var(--muted)}
 .detail .conns{margin:10px 0 0;padding:0;list-style:none;font-size:13px;display:grid;gap:4px}
+.detail .tickets-toggle{margin:6px 0 0;border:0;background:none;padding:0;color:var(--accent);cursor:pointer;font:inherit;font-size:13px;text-decoration:underline;text-underline-offset:2px}
 .detail .conns button{border:0;background:none;padding:0;color:var(--accent);cursor:pointer;font:inherit;text-decoration:underline;text-underline-offset:2px}
 .detail a{color:var(--accent)}
 .map.focus .node:not(.on){opacity:.35}
@@ -57,3 +58,12 @@ h3{font-size:15px;margin:28px 0 8px}
 .detail .meta2.ok{color:var(--done-ink)}
 .detail .meta2.bad{color:var(--hi-ink)}
 @media (prefers-reduced-motion:reduce){.node{transition:none}}
+
+/* "+" buttons for adding things, shown only while the form editor is open */
+.addHere{display:none;align-self:flex-start;border:1px dashed var(--line);background:none;color:var(--muted);border-radius:8px;padding:4px 10px;font:inherit;font-size:13px;cursor:pointer;min-height:30px}
+.addHere:hover,.addHere:focus-visible{border-color:var(--accent);color:var(--accent)}
+.sec .addHere{margin-left:10px}
+.formOn .addHere{display:inline-flex;align-items:center}
+.addRow{display:none;gap:8px;flex-wrap:wrap}
+.formOn .addRow{display:flex}
+.addFoot{position:relative;z-index:1;margin-top:16px}

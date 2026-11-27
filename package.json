@@ -8,7 +8,10 @@
     "husky": "^9.1.7"
   },
   "scripts": {
-    "prepare": "husky"
+    "verify": "node scripts/verify-records.mjs && node --test scripts/test-migration.mjs scripts/test-org.mjs scripts/test-board.mjs scripts/test-report.mjs scripts/test-ui-helpers.mjs scripts/test-flow-edit.mjs scripts/test-flow-notes.mjs scripts/test-flow-shapes.mjs scripts/test-ai-flow.mjs scripts/test-flow-free.mjs scripts/test-flow-layout.mjs scripts/test-flow-export.mjs scripts/test-flow-mermaid.mjs scripts/test-flow-links.mjs scripts/test-ticket-ids.mjs && python3 scripts/test_server.py && python3 scripts/test_ai.py && python3 scripts/test_ai_flow.py",
+    "import": "node scripts/import-legacy.mjs",
+    "prepare": "husky",
+    "e2e": "npm --prefix app run build && node scripts/e2e-local.mjs && node scripts/e2e-from-scratch.mjs && node scripts/e2e-upgrade.mjs && node scripts/e2e-tickets.mjs && node scripts/e2e-map-edit.mjs && node scripts/e2e-flow-canvas.mjs && node scripts/e2e-flow-notes.mjs && node scripts/e2e-flow-shapes.mjs && node scripts/e2e-flow-brief.mjs && node scripts/e2e-flow-map.mjs && node scripts/e2e-flow-export.mjs && node scripts/e2e-flow-free.mjs && node scripts/e2e-flow-free-shapes.mjs && node scripts/e2e-ai-setup.mjs && node scripts/e2e-ai-generate.mjs && node scripts/e2e-ai-chart.mjs && node scripts/e2e-ai-edit.mjs && node scripts/e2e-ai-edit-free.mjs"
   },
   "type": "module"
 }

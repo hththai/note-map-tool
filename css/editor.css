@@ -11,3 +11,50 @@
 .editor[hidden]{display:none}
 .editor h2{margin:0;font-size:15px}
 textarea{width:100%;min-height:420px;resize:vertical;font:13px/1.5 var(--mono);background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px;tab-size:2}
+
+/* form editor inside the side panel */
+.editor [hidden]{display:none}
+.seg{display:flex;gap:0}
+.seg button{flex:1;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:7px 10px;cursor:pointer;min-height:36px;font:inherit;font-size:13px}
+.seg button:first-child{border-radius:8px 0 0 8px}
+.seg button:last-child{border-radius:0 8px 8px 0}
+.seg button+button{border-left:0}
+.seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.mform{display:flex;flex-direction:column;gap:14px}
+.mbox{display:flex;flex-direction:column;gap:10px;min-width:0}
+.mbox+.mbox{border-top:1px solid var(--line);padding-top:12px}
+.mbox h3{margin:0;font-size:14px}
+.mbox label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+.mbox input,.mbox select,.mbox textarea{width:100%;min-width:0}
+.mbox textarea{min-height:70px;font:14px/1.45 var(--font)}
+.mbox .lbl{font-size:13px;color:var(--muted);margin-bottom:-6px}
+.mbox .hint{margin:0;color:var(--muted);font-size:13px}
+.mrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.mrow>input{flex:1}
+.mbox .btn.danger{color:var(--hi-ink)}
+.btn.sm{min-height:30px;padding:3px 10px;font-size:13px}
+.mhead{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.mtools{display:flex;gap:4px}
+.mundo{display:flex;gap:6px;justify-content:flex-end;margin-bottom:-6px}
+.more{border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.more[open]{display:flex;flex-direction:column;gap:10px}
+.more summary{cursor:pointer;font-size:13px;color:var(--muted)}
+.mlink{display:flex;flex-direction:column;gap:6px;padding:8px;border:1px solid var(--line);border-radius:8px}
+.mlink .mrow{flex-wrap:nowrap}
+.mlink .dir{color:var(--muted);font-size:12px;white-space:nowrap}
+.mlink .who{flex:1;min-width:0;text-align:left;border:0;background:none;padding:0;font:inherit;font-weight:600;color:var(--accent);cursor:pointer;overflow-wrap:anywhere}
+.mlink span.who{color:var(--muted);font-weight:400;cursor:default}
+.maddlink{display:flex;flex-direction:column;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:3px 10px;font:inherit;font-size:12px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.hint.bad{color:var(--hi-ink)}
+
+/* header: map switcher and buttons */
+.topBtns{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+dialog{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:18px;width:min(92vw,420px)}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog h3{margin:0 0 10px}
+dialog label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+dialog .hint{margin:8px 0 0;font-size:13px;color:var(--muted);min-height:1em}
+dialog .mrow{margin-top:12px}

@@ -25,4 +25,5 @@
   App.loadFlows();
   if (location.hash === '#tickets') showTab('tickets');
   if (location.hash === '#flows') showTab('flows');
+  if (location.hash === '#edit') $('editBtn').click();
 })(App);

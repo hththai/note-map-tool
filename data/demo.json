@@ -1,0 +1,590 @@
+{
+  "schemaVersion": 1,
+  "title": "Sheets Ecosystem Map",
+  "departments": [
+    {
+      "id": "d_1nhxg3wi",
+      "name": "Operations",
+      "text": [
+        "Lead: Kim Tran · IT contact: Sam"
+      ],
+      "sections": [
+        {
+          "id": "c_22tyyol8",
+          "title": "Weekly stock count — Fridays, Ops lead",
+          "note": "Count on the warehouse floor, then update Inventory before 3pm."
+        },
+        {
+          "id": "c_1z9fryys",
+          "title": "Suppliers",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "d_inf9r4uz",
+      "name": "Sales",
+      "text": [
+        "Lead: Ana Cole"
+      ],
+      "sections": [
+        {
+          "id": "c_wzcgczrp",
+          "title": "Quote approval — per quote, Sales manager",
+          "note": ""
+        },
+        {
+          "id": "c_1rxpla0d",
+          "title": "Planning",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "d_1qmycci1",
+      "name": "Finance",
+      "text": [
+        "Lead: Sam Ortiz"
+      ],
+      "sections": [
+        {
+          "id": "c_cy6x40u9",
+          "title": "Month-end close — days 1–3, Finance lead",
+          "note": "Starts on the first working day. Budget Tracker is locked once the close is signed off."
+        },
+        {
+          "id": "c_iwys523j",
+          "title": "Payroll run — fortnightly",
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "d_vf732xz9",
+      "name": "HR",
+      "text": [
+        "Lead: Jo Park"
+      ],
+      "sections": [
+        {
+          "id": "c_2zavdzhe",
+          "title": "New starter setup — on hire, HR admin",
+          "note": ""
+        },
+        {
+          "id": "c_nc4i02zu",
+          "title": "Leave",
+          "note": ""
+        }
+      ]
+    }
+  ],
+  "sheets": [
+    {
+      "id": "s_2fon51e9",
+      "kind": "sheet",
+      "name": "Inventory",
+      "departmentId": "d_1nhxg3wi",
+      "sectionId": "c_22tyyol8",
+      "owner": "Kim",
+      "details": [],
+      "crit": "high",
+      "url": null,
+      "note": "Master stock levels. Only Kim and Raj can edit.",
+      "sort": 1024
+    },
+    {
+      "id": "s_275tf8ru",
+      "kind": "sheet",
+      "name": "Orders",
+      "departmentId": "d_1nhxg3wi",
+      "sectionId": "c_22tyyol8",
+      "owner": "Kim",
+      "details": [],
+      "crit": "high",
+      "url": null,
+      "note": "Feeds the Sales pipeline through IMPORTRANGE.",
+      "sort": 2048
+    },
+    {
+      "id": "s_1xy9vgwa",
+      "kind": "sheet",
+      "name": "Supplier List",
+      "departmentId": "d_1nhxg3wi",
+      "sectionId": "c_1z9fryys",
+      "owner": "Raj",
+      "details": [],
+      "crit": "medium",
+      "url": null,
+      "note": "",
+      "sort": 3072
+    },
+    {
+      "id": "s_pbtbrnfs",
+      "kind": "sheet",
+      "name": "Pipeline",
+      "departmentId": "d_inf9r4uz",
+      "sectionId": "c_wzcgczrp",
+      "owner": "Ana",
+      "details": [],
+      "crit": "high",
+      "url": null,
+      "note": "",
+      "sort": 4096
+    },
+    {
+      "id": "s_1l1u6giw",
+      "kind": "sheet",
+      "name": "Quotes",
+      "departmentId": "d_inf9r4uz",
+      "sectionId": "c_wzcgczrp",
+      "owner": "Lee",
+      "details": [],
+      "crit": "high",
+      "url": null,
+      "note": "Quotes over $10k need Finance sign-off before they go out.",
+      "sort": 5120
+    },
+    {
+      "id": "s_7v7laax7",
+      "kind": "sheet",
+      "name": "Targets",
+      "departmentId": "d_inf9r4uz",
+      "sectionId": "c_1rxpla0d",
+      "owner": "Ana",
+      "details": [],
+      "crit": "medium",
+      "url": null,
+      "note": "",
+      "sort": 6144
+    },
+    {
+      "id": "s_26ih2gr3",
+      "kind": "sheet",
+      "name": "Budget Tracker",
+      "departmentId": "d_1qmycci1",
+      "sectionId": "c_cy6x40u9",
+      "owner": "Sam",
+      "details": [],
+      "crit": "high",
+      "url": null,
+      "note": "",
+      "sort": 7168
+    },
+    {
+      "id": "s_5kgspmk6",
+      "kind": "sheet",
+      "name": "Invoice Log",
+      "departmentId": "d_1qmycci1",
+      "sectionId": "c_cy6x40u9",
+      "owner": "Priya",
+      "details": [],
+      "crit": "high",
+      "url": null,
+      "note": "",
+      "sort": 8192
+    },
+    {
+      "id": "s_wysa0kz3",
+      "kind": "sheet",
+      "name": "Payroll Summary",
+      "departmentId": "d_1qmycci1",
+      "sectionId": "c_iwys523j",
+      "owner": "Sam",
+      "details": [],
+      "crit": "high",
+      "url": null,
+      "note": "Headcount is copied in by hand before each run. Check the totals against HR.",
+      "sort": 9216
+    },
+    {
+      "id": "s_13dddj2x",
+      "kind": "sheet",
+      "name": "Onboarding Checklist",
+      "departmentId": "d_vf732xz9",
+      "sectionId": "c_2zavdzhe",
+      "owner": "Jo",
+      "details": [],
+      "crit": "low",
+      "url": null,
+      "note": "",
+      "sort": 10240
+    },
+    {
+      "id": "s_1ih0k6bk",
+      "kind": "sheet",
+      "name": "Headcount",
+      "departmentId": "d_vf732xz9",
+      "sectionId": "c_2zavdzhe",
+      "owner": "Jo",
+      "details": [],
+      "crit": "high",
+      "url": null,
+      "note": "Source of truth for payroll. Update within one day of any change.",
+      "sort": 11264
+    },
+    {
+      "id": "s_11r2ugxa",
+      "kind": "sheet",
+      "name": "Leave Requests",
+      "departmentId": "d_vf732xz9",
+      "sectionId": "c_nc4i02zu",
+      "owner": "Jo",
+      "details": [],
+      "crit": "medium",
+      "url": null,
+      "note": "",
+      "sort": 12288
+    },
+    {
+      "id": "s_8ycqjhdi",
+      "kind": "app",
+      "name": "Vendor portal",
+      "departmentId": null,
+      "sectionId": null,
+      "owner": "Supplier price export",
+      "details": [],
+      "crit": null,
+      "url": null,
+      "note": "",
+      "sort": 13312
+    },
+    {
+      "id": "s_19me76j7",
+      "kind": "app",
+      "name": "CRM",
+      "departmentId": null,
+      "sectionId": null,
+      "owner": "Daily connector sync",
+      "details": [],
+      "crit": null,
+      "url": null,
+      "note": "Owned by Sales ops. If the sync fails, Quotes stops updating.",
+      "sort": 14336
+    },
+    {
+      "id": "s_1efeqbr0",
+      "kind": "app",
+      "name": "Looker Studio",
+      "departmentId": null,
+      "sectionId": null,
+      "owner": "Finance dashboard",
+      "details": [],
+      "crit": null,
+      "url": null,
+      "note": "",
+      "sort": 15360
+    },
+    {
+      "id": "s_kbs2ddsk",
+      "kind": "app",
+      "name": "Slack",
+      "departmentId": null,
+      "sectionId": null,
+      "owner": "Apps Script reminders",
+      "details": [],
+      "crit": null,
+      "url": null,
+      "note": "",
+      "sort": 16384
+    }
+  ],
+  "links": [
+    {
+      "id": "l_c9445gs5",
+      "fromId": "s_275tf8ru",
+      "toId": "s_pbtbrnfs",
+      "label": "IMPORTRANGE",
+      "sort": 1024
+    },
+    {
+      "id": "l_e7o1e24u",
+      "fromId": "s_1l1u6giw",
+      "toId": "s_5kgspmk6",
+      "label": "IMPORTRANGE",
+      "sort": 2048
+    },
+    {
+      "id": "l_1acem9dy",
+      "fromId": "s_1ih0k6bk",
+      "toId": "s_wysa0kz3",
+      "label": "manual copy",
+      "sort": 3072
+    },
+    {
+      "id": "l_67bspq8r",
+      "fromId": "s_8ycqjhdi",
+      "toId": "s_1xy9vgwa",
+      "label": "CSV import",
+      "sort": 4096
+    },
+    {
+      "id": "l_14j63w6s",
+      "fromId": "s_19me76j7",
+      "toId": "s_1l1u6giw",
+      "label": "connector, daily",
+      "sort": 5120
+    },
+    {
+      "id": "l_19mweq7s",
+      "fromId": "s_5kgspmk6",
+      "toId": "s_1efeqbr0",
+      "label": "connector",
+      "sort": 6144
+    },
+    {
+      "id": "l_1q3oht4b",
+      "fromId": "s_13dddj2x",
+      "toId": "s_kbs2ddsk",
+      "label": "Apps Script",
+      "sort": 7168
+    }
+  ],
+  "flows": [
+    {
+      "id": "f_26xfi9g8",
+      "sort": 1024,
+      "title": "Weekly payroll",
+      "every": "Friday, then Monday",
+      "teams": [
+        "Harvest",
+        "IT",
+        "Finance"
+      ],
+      "unreadable": [],
+      "steps": [
+        {
+          "id": "p_1bp0bax6",
+          "sort": 1024,
+          "team": "Harvest",
+          "title": "Top up",
+          "day": "Fri",
+          "ticket": null,
+          "note": "",
+          "triggers": [
+            {
+              "team": "Harvest",
+              "msg": "Piece work ready"
+            }
+          ],
+          "backs": []
+        },
+        {
+          "id": "p_qcf7rnxi",
+          "sort": 2048,
+          "team": "IT",
+          "title": "Check piece work",
+          "day": "Fri",
+          "ticket": null,
+          "note": "Count each picker's boxes against the weighbridge slips.",
+          "triggers": [],
+          "backs": []
+        },
+        {
+          "id": "p_17zj82zc",
+          "sort": 3072,
+          "team": "Finance",
+          "title": "Review shortage hours",
+          "day": "Mon",
+          "ticket": null,
+          "note": "Headcount is copied in by hand first, so check it against HR.",
+          "sheetId": "s_wysa0kz3",
+          "triggers": [
+            {
+              "team": "IT",
+              "msg": "Top up done"
+            }
+          ],
+          "backs": []
+        },
+        {
+          "id": "p_28ck3bxv",
+          "sort": 4096,
+          "team": "Finance",
+          "title": "Review OT",
+          "day": "Mon",
+          "ticket": null,
+          "note": "",
+          "sheetId": "s_1ih0k6bk",
+          "triggers": [],
+          "backs": []
+        }
+      ]
+    },
+    {
+      "id": "f_m9isdv7v",
+      "sort": 2048,
+      "title": "Quote approval",
+      "every": "per quote",
+      "teams": [
+        "Sales",
+        "Finance"
+      ],
+      "unreadable": [],
+      "steps": [
+        {
+          "id": "p_22vsbeys",
+          "sort": 1024,
+          "team": "Sales",
+          "title": "Draft quote",
+          "day": null,
+          "ticket": null,
+          "note": "",
+          "sheetId": "s_1l1u6giw",
+          "triggers": [],
+          "backs": []
+        },
+        {
+          "id": "p_19et4x5c",
+          "sort": 2048,
+          "team": "Finance",
+          "title": "Sign off quotes over $10k",
+          "day": null,
+          "ticket": null,
+          "note": "",
+          "sheetId": "s_5kgspmk6",
+          "triggers": [
+            {
+              "team": "Sales",
+              "msg": "Quote over $10k"
+            }
+          ],
+          "backs": [
+            {
+              "stepId": "p_22vsbeys",
+              "msg": "Changes needed"
+            }
+          ]
+        },
+        {
+          "id": "p_gqqyj437",
+          "sort": 3072,
+          "team": "Sales",
+          "title": "Send quote to customer",
+          "day": null,
+          "ticket": null,
+          "note": "",
+          "triggers": [
+            {
+              "team": "Finance",
+              "msg": "Approved"
+            }
+          ],
+          "backs": []
+        }
+      ]
+    }
+  ],
+  "tickets": {
+    "nextId": 7,
+    "extra": {},
+    "items": [
+      {
+        "id": "P20261115.001",
+        "title": "Rebuild Orders import",
+        "type": "project",
+        "status": "doing",
+        "owner": "Kim",
+        "url": "",
+        "targetId": "s_275tf8ru",
+        "notes": "Replace the manual export with IMPORTRANGE.",
+        "log": [
+          {
+            "date": "2026-11-10",
+            "hours": 2,
+            "note": "Mapped the columns"
+          },
+          {
+            "date": "2026-11-12",
+            "hours": 3.5,
+            "note": "First IMPORTRANGE test"
+          },
+          {
+            "date": "2026-11-15",
+            "hours": 0.25,
+            "note": "Review result"
+          }
+        ],
+        "updated": "2026-11-15",
+        "blocked": "",
+        "sort": 1024
+      },
+      {
+        "id": "T20261112.001",
+        "title": "Fix CRM sync failures",
+        "type": "ticket",
+        "status": "blocked",
+        "owner": "Ana",
+        "url": "",
+        "targetId": "s_19me76j7",
+        "notes": "Sync stops every night after the key expires.",
+        "log": [
+          {
+            "date": "2026-11-12",
+            "hours": 1.25,
+            "note": "Reproduced the failure"
+          }
+        ],
+        "blocked": "Waiting on vendor API key",
+        "updated": "2026-11-12",
+        "sort": 2048
+      },
+      {
+        "id": "T20261113.001",
+        "title": "Automate headcount copy",
+        "type": "ticket",
+        "status": "todo",
+        "owner": "Jo",
+        "url": "",
+        "targetId": "s_wysa0kz3",
+        "notes": "Remove the manual copy before each payroll run.",
+        "updated": "2026-11-13",
+        "sort": 3072
+      },
+      {
+        "id": "P20261114.001",
+        "title": "Month-end close checklist",
+        "type": "project",
+        "status": "todo",
+        "owner": "Sam",
+        "url": "",
+        "targetId": "d_1qmycci1",
+        "notes": "",
+        "updated": "2026-11-14",
+        "sort": 4096
+      },
+      {
+        "id": "T20261101.001",
+        "title": "Lock Budget Tracker after sign-off",
+        "type": "ticket",
+        "status": "done",
+        "owner": "Sam",
+        "url": "",
+        "targetId": "s_26ih2gr3",
+        "notes": "",
+        "updated": "2026-11-01",
+        "sort": 5120
+      },
+      {
+        "id": "T20261115.001",
+        "title": "Slack reminders for new starters",
+        "type": "ticket",
+        "status": "doing",
+        "owner": "Jo",
+        "url": "",
+        "targetId": "s_kbs2ddsk",
+        "notes": "",
+        "updated": "2026-11-15",
+        "sort": 6144
+      }
+    ]
+  },
+  "removed": [],
+  "meta": {
+    "importedFrom": {
+      "map": "demo.md",
+      "flows": "demo.flows.md",
+      "tickets": "demo.tickets.json"
+    }
+  }
+}

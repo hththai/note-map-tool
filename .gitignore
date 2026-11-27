@@ -11,3 +11,12 @@ maps/*.flows.md
 maps/*.tickets.json
 !maps/demo.tickets.json
 node_modules
+maps/.history/
+__pycache__/
+
+# private data files (use data/demo.json for the example)
+data/*
+!data/demo.json
+
+# AI provider key (see docs/AI.md); never commit
+data/.ai.json

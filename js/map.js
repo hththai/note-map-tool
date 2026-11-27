@@ -26,6 +26,13 @@
     return d;
   }
 
+  /* "+" buttons shown while the form editor is open (CSS hides them otherwise); map-form.js supplies App.formAdd */
+  function addBtn(label, fn){
+    var b = el('button', 'addHere', label); b.type = 'button';
+    b.addEventListener('click', function(ev){ ev.stopPropagation(); if (App.formAdd) fn(App.formAdd); });
+    return b;
+  }
+
   function render(md){
     var model = S.model = App.parse(md);
     var map = $('map');
@@ -46,6 +53,8 @@
       var box = el('section', 'dept');
       var h2 = el('h2', null, dp.name), dOpen = App.openFor('dept:' + dp.name).length;
       if (dOpen) h2.appendChild(App.tixBadge(dOpen));
+      h2.tabIndex = 0;
+      S.items['edept:' + di] = { kind: 'dept', name: dp.name, note: '', ref: dp, el: h2 };
       box.appendChild(h2);
       dp.text.forEach(function(t){ box.appendChild(el('p', 'meta', t)); });
       dp.sections.forEach(function(sc, si){
@@ -56,15 +65,24 @@
           h.appendChild(document.createTextNode(sc.title));
           if (sc.note) h.appendChild(infoDot());
           h.tabIndex = 0; h.setAttribute('role', 'button');
-          S.items[key] = { kind: 'section', name: sc.title, note: sc.note, dept: dp.name, el: h };
+          S.items[key] = { kind: 'section', name: sc.title, note: sc.note, dept: dp.name, ref: sc, el: h };
           wrap.appendChild(h);
         }
         sc.nodes.forEach(function(n){ var d = makeNode(n, dp.name); reg(n, d); wrap.appendChild(d); });
+        wrap.appendChild(addBtn('+ Sheet', function(f){ f.sheet(di, si); }));
         box.appendChild(wrap);
       });
+      var tail = el('div', 'addRow');
+      if (!dp.sections.length) tail.appendChild(addBtn('+ Sheet', function(f){ f.sheet(di, -1); }));
+      tail.appendChild(addBtn('+ Section', function(f){ f.section(di); }));
+      box.appendChild(tail);
       cols.appendChild(box);
     });
     map.appendChild(cols);
+    var foot = el('div', 'addRow addFoot');
+    foot.appendChild(addBtn('+ Department', function(f){ f.dept(); }));
+    foot.appendChild(addBtn('+ App', function(f){ f.app(); }));
+    map.appendChild(foot);
     if (model.apps.length) {
       var ab = el('section', 'appsBox');
       ab.appendChild(el('h2', null, 'Connected apps'));
@@ -73,9 +91,9 @@
       ab.appendChild(row); map.appendChild(ab);
     }
     Object.keys(S.items).forEach(function(k){
-      var d = S.items[k].el;
-      d.addEventListener('click', function(ev){ ev.stopPropagation(); select(S.selected === k ? null : k); });
-      d.addEventListener('keydown', function(ev){ if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); select(S.selected === k ? null : k); } });
+      var d = S.items[k].el, dept = S.items[k].kind === 'dept';
+      d.addEventListener('click', function(ev){ if (dept && !formOn()) return; ev.stopPropagation(); select(S.selected === k ? null : k); });
+      d.addEventListener('keydown', function(ev){ if (dept && !formOn()) return; if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); select(S.selected === k ? null : k); } });
     });
     map.onclick = function(){ select(null); };
 
@@ -142,6 +160,7 @@
   }
 
   /* ---------- selection and detail panel ---------- */
+  function formOn(){ return !!(App.formActive && App.formActive()); }
   function select(k){ if (k !== S.selected) { S.detailNote = ''; S.detailWarn = ''; } S.selected = k; applySelection(); }
   function applySelection(){
     var map = $('map'), on = {}, isNode = !!(S.selected && S.nodeEls[S.selected]);
@@ -155,10 +174,11 @@
     Object.keys(S.items).forEach(function(k){ S.items[k].el.classList.toggle('sel', k === S.selected); });
     map.classList.toggle('focus', isNode);
     showDetail();
+    if (App.onSelect) App.onSelect();
   }
   function showDetail(){
     var box = $('detail'), it = S.selected && S.items[S.selected];
-    if (!it) { box.hidden = true; box.innerHTML = ''; $('page').classList.remove('detailOpen'); return; }
+    if (!it || formOn()) { box.hidden = true; box.innerHTML = ''; $('page').classList.remove('detailOpen'); return; }
     /* keep a half-typed quick-add title when the detail is redrawn for the same item */
     var prevQ = box.dataset.key === S.selected ? box.querySelector('.quick input') : null;
     var prevVal = prevQ ? prevQ.value : '', hadFocus = !!prevQ && document.activeElement === prevQ;
@@ -184,15 +204,33 @@
     box.appendChild(body);
     var linked = S.tdata.tickets.filter(function(t){ return t.target === S.selected; });
     if (linked.length) {
-      var tu = el('ul', 'conns');
-      linked.forEach(function(t){
-        var li = el('li'), b = el('button', null, t.id + ' ' + t.title); b.type = 'button';
-        b.addEventListener('click', function(){ App.showTab('tickets'); App.openForm(t.id); });
-        li.appendChild(document.createTextNode(App.statusLabel(t.status) + ' · '));
-        li.appendChild(b); tu.appendChild(li);
-      });
+      /* Open tickets first, done last; only the first few show until "Show all". Resets on every selection. */
+      var LIMIT = 3, isDone = function(t){ return t.status === 'done'; };
+      linked = linked.filter(function(t){ return !isDone(t); }).concat(linked.filter(isDone));
+      var tu = el('ul', 'conns'), toggle = null;
+      var fillTickets = function(all){
+        tu.textContent = '';
+        var shown = all ? linked : linked.filter(function(t){ return !isDone(t); }).slice(0, LIMIT);
+        shown.forEach(function(t){
+          var li = el('li'), b = el('button', null, t.id + ' ' + t.title); b.type = 'button';
+          b.addEventListener('click', function(){ App.showTab('tickets'); App.openForm(t.id); });
+          li.appendChild(document.createTextNode(App.statusLabel(t.status) + ' · '));
+          li.appendChild(b); tu.appendChild(li);
+        });
+        if (toggle) {
+          var nDone = linked.filter(isDone).length;
+          toggle.textContent = all ? 'Show fewer' : 'Show all ' + linked.length + (nDone ? ' (' + nDone + ' done)' : '');
+        }
+      };
       box.appendChild(el('p', 'meta2', 'Tickets and projects'));
       box.appendChild(tu);
+      if (linked.length > LIMIT || linked.some(isDone)) {
+        var expanded = false;
+        toggle = el('button', 'tickets-toggle'); toggle.type = 'button';
+        toggle.addEventListener('click', function(){ expanded = !expanded; fillTickets(expanded); });
+        box.appendChild(toggle);
+      }
+      fillTickets(false);
     }
     if (S.nodeEls[S.selected]) {
       var qa = App.quickAdd(S.selected, it, prevVal);

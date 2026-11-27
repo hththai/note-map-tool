@@ -1,0 +1,207 @@
+<title>Flow Canvas Concepts</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=Caveat:wght@500;700&display=swap">
+<style>
+/* Layout: header + skin picker, then three annotated concept screens stacked, each with numbered callouts below */
+:root{
+  --bg:#F6F7F9; --surface:#FFFFFF; --fg:#1B2433; --muted:#5B6678; --line:#DDE2EA; --accent:#2F5BEA;
+  --f-body:'Inter',system-ui,sans-serif; --f-head:'Space Grotesk','Inter',sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0E131B;--surface:#161D28;--fg:#E7ECF3;--muted:#98A3B5;--line:#273041;--accent:#7FA2FF;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0E131B;--surface:#161D28;--fg:#E7ECF3;--muted:#98A3B5;--line:#273041;--accent:#7FA2FF;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--f-body);padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:44px}
+h1,h2{font-family:var(--f-head);margin:0;text-wrap:balance}
+h1{font-size:clamp(28px,5vw,40px);line-height:1.1}
+h2{font-size:21px}
+.lede{color:var(--muted);max-width:62ch;margin:10px 0 0}
+.skins{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.skin{all:unset;cursor:pointer;display:flex;gap:10px;align-items:center;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);min-width:0}
+.skin:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.skin[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.sw{display:flex;border-radius:6px;overflow:hidden;border:1px solid var(--line);flex:none}
+.sw i{display:block;width:14px;height:26px}
+.skin b{display:block;font-size:14px}.skin small{display:block;color:var(--muted);font-size:12px}
+.skinnote{color:var(--muted);margin:12px 0 0;max-width:70ch;min-height:3em}
+.screen{display:flex;flex-direction:column;gap:14px}
+.screen>p{margin:0;color:var(--muted);max-width:68ch}
+.frame{border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow-x:auto}
+.mock{display:block;width:100%;min-width:720px;height:auto}
+ol.call{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px 24px}
+ol.call li{display:flex;gap:10px;min-width:0;color:var(--muted);font-size:14px}
+ol.call li b{color:var(--fg)}
+.n{flex:none;width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--bg);font:600 12px/22px var(--f-body);text-align:center}
+.rec{border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:var(--surface)}
+.rec h2{margin-bottom:8px}.rec p{margin:0 0 8px;color:var(--muted)}.rec p:last-child{margin:0}
+
+/* ---- mock skins: every drawn colour comes from these ---- */
+.stage{--m-bg:#F7F8FB;--m-lane1:#FFFFFF;--m-lane2:#F0F3F8;--m-laneline:#D8DEE9;--m-step:#FFFFFF;--m-stepline:#B9C3D4;--m-text:#1B2433;--m-sub:#6A768A;--m-acc:#2F5BEA;--m-accsoft:#E4EBFF;--m-back:#D9483B;--m-note:#FFF0A6;--m-notetext:#4A3E00;--m-font:'Inter',sans-serif;--m-sw:1.5;--m-r:10;--m-fs:13}
+.stage[data-skin="blueprint"]{--m-bg:#0D1828;--m-lane1:#122238;--m-lane2:#0F1D31;--m-laneline:#2A4468;--m-step:#16304F;--m-stepline:#4F76A8;--m-text:#E6F0FF;--m-sub:#8FA9CB;--m-acc:#5BC8FF;--m-accsoft:#12405A;--m-back:#FF8A7A;--m-note:#F2D675;--m-notetext:#3A2E00;--m-font:'Space Grotesk',sans-serif;--m-sw:1.4;--m-r:3}
+.stage[data-skin="marker"]{--m-bg:#FFFFFF;--m-lane1:#FFF7EC;--m-lane2:#EEF8F1;--m-laneline:#222;--m-step:#FFFFFF;--m-stepline:#222;--m-text:#1A1A1A;--m-sub:#555;--m-acc:#6B4EFF;--m-accsoft:#E9E4FF;--m-back:#E5484D;--m-note:#FFC9DE;--m-notetext:#4A1230;--m-font:'Caveat',cursive;--m-sw:2.4;--m-r:14;--m-fs:18}
+.mock text{font-family:var(--m-font);fill:var(--m-text);font-size:var(--m-fs)}
+.mock .sub{fill:var(--m-sub);font-size:calc(var(--m-fs) - 2px)}
+.mock .bg{fill:var(--m-bg)}
+.mock .lane{fill:var(--m-lane1);stroke:var(--m-laneline);stroke-width:1}
+.mock .lane.b{fill:var(--m-lane2)}
+.mock .lane.hot{stroke:var(--m-acc);stroke-width:2;stroke-dasharray:6 4;fill:var(--m-accsoft)}
+.mock .ll{fill:var(--m-sub);font-size:calc(var(--m-fs) - 2px);letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.mock .step{fill:var(--m-step);stroke:var(--m-stepline);stroke-width:var(--m-sw)}
+.mock .step.sel{stroke:var(--m-acc);stroke-width:2.5}
+.mock .step.ghost{fill:var(--m-accsoft);stroke:var(--m-acc);stroke-dasharray:5 4}
+.mock .step.fade{opacity:.35}
+.mock .edge{fill:none;stroke:var(--m-acc);stroke-width:var(--m-sw)}
+.mock .edge.back{stroke:var(--m-back);stroke-dasharray:6 4}
+.mock .edge.dash{stroke:var(--m-acc);stroke-dasharray:5 4;opacity:.7}
+.mock .tip{fill:var(--m-acc)}.mock .tipb{fill:var(--m-back)}
+.mock .el{font-size:calc(var(--m-fs) - 2px);fill:var(--m-sub)}
+.mock .note{fill:var(--m-note)}
+.mock .nt{fill:var(--m-notetext)}
+.mock .handle{fill:var(--m-bg);stroke:var(--m-acc);stroke-width:2}
+.mock .pill{fill:var(--m-acc)}.mock .pillt{fill:var(--m-bg);font-weight:600}
+.mock .ui{fill:var(--m-step);stroke:var(--m-stepline);stroke-width:1}
+.mock .uit{font-size:calc(var(--m-fs) - 1px)}
+.mock .badge{fill:var(--m-acc)}.mock .badget{fill:var(--m-bg);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;text-anchor:middle}
+.mock .inp{fill:var(--m-bg);stroke:var(--m-acc);stroke-width:2}
+.mock .caret{fill:var(--m-acc);animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.mock .caret{animation:none}}
+.mock .anchor{text-anchor:middle}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Flow Canvas Concepts</h1>
+    <p class="lede">Three screens for the Business flows tab, drawn as if the canvas were the editor: drag boxes between lanes, type on the diagram, drop sticky notes, mark decisions, export. Pick a skin to see the same screens in another look.</p>
+    <div class="skins" role="group" aria-label="Skin">
+      <button class="skin" data-s="paper" aria-pressed="true"><span class="sw"><i style="background:#F7F8FB"></i><i style="background:#fff"></i><i style="background:#2F5BEA"></i><i style="background:#FFF0A6"></i></span><span><b>Paper</b><small>Clean, light</small></span></button>
+      <button class="skin" data-s="blueprint" aria-pressed="false"><span class="sw"><i style="background:#0D1828"></i><i style="background:#16304F"></i><i style="background:#5BC8FF"></i><i style="background:#F2D675"></i></span><span><b>Blueprint</b><small>Dark, technical</small></span></button>
+      <button class="skin" data-s="marker" aria-pressed="false"><span class="sw"><i style="background:#fff"></i><i style="background:#FFF7EC"></i><i style="background:#6B4EFF"></i><i style="background:#FFC9DE"></i></span><span><b>Marker</b><small>Whiteboard, hand-drawn</small></span></button>
+    </div>
+    <p class="skinnote" id="skinnote"></p>
+  </header>
+
+  <div class="stage" id="stage" data-skin="paper">
+    <div class="wrap">
+      <section class="screen">
+        <h2>1. Edit on the canvas</h2>
+        <p>Weekly payroll, with the Review OT step being dragged into the IT lane. Nothing opens a form for this.</p>
+        <div class="frame"><svg class="mock" id="m1" viewBox="0 0 920 396" role="img" aria-label="Swimlane with a step being dragged to another lane and a sticky note"></svg></div>
+        <ol class="call">
+          <li><span class="n">1</span><span><b>Select a step</b> to get a small toolbar and handles. Double-click to type, Delete to remove.</span></li>
+          <li><span class="n">2</span><span><b>Drag to another lane.</b> The lane lights up and the drop changes the team. Order and spacing follow on their own.</span></li>
+          <li><span class="n">3</span><span><b>Sticky notes</b> sit anywhere. Free text, no fields, saved with the flow.</span></li>
+        </ol>
+      </section>
+
+      <section class="screen">
+        <h2>2. Type to build</h2>
+        <p>Double-click an empty spot in a lane and start typing. Enter finishes the step and starts the next, already linked.</p>
+        <div class="frame"><svg class="mock" id="m2" viewBox="0 0 920 380" role="img" aria-label="A step being typed in a lane, with the next step shown as a ghost"></svg></div>
+        <ol class="call">
+          <li><span class="n">1</span><span><b>Inline text box</b> on the lane. The team is the lane you clicked in.</span></li>
+          <li><span class="n">2</span><span><b>Enter</b> adds the next step to the right with an arrow. Esc stops.</span></li>
+          <li><span class="n">3</span><span><b>Paste several lines</b> and each becomes a step. Fix the details later.</span></li>
+        </ol>
+      </section>
+
+      <section class="screen">
+        <h2>3. Explain it, then share it</h2>
+        <p>Quote approval with start and end markers, a yes/no decision, labelled branches, and the export menu.</p>
+        <div class="frame"><svg class="mock" id="m3" viewBox="0 0 920 306" role="img" aria-label="Quote approval flow with a decision diamond and export menu"></svg></div>
+        <ol class="call">
+          <li><span class="n">1</span><span><b>Start and end</b> pills show where the process begins and finishes.</span></li>
+          <li><span class="n">2</span><span><b>Decision diamond</b> with labelled branches. "Changes needed" stays as the dashed send-back arrow.</span></li>
+          <li><span class="n">3</span><span><b>Export</b> as PNG or SVG for a slide or chat. Mermaid stays for docs.</span></li>
+        </ol>
+      </section>
+    </div>
+  </div>
+
+  <section class="rec">
+    <h2>Suggested skin plan</h2>
+    <p><b>Paper</b> as the default light theme and <b>Blueprint</b> as its dark counterpart, so the canvas follows the app's light and dark mode. <b>Marker</b> is an optional "sketch" skin for workshops, where a rough look invites people to change things.</p>
+    <p>Same data, same layout in all three. Only colour, line weight, corner radius and the step font change.</p>
+  </section>
+</div>
+
+<script>
+(function(){
+  var NS='';
+  function T(x,y,s,c,a){return '<text x="'+x+'" y="'+y+'" class="'+(c||'')+(a?' anchor':'')+'">'+s+'</text>';}
+  function lane(y,h,name,cls){return '<rect class="lane '+(cls||'')+'" x="10" y="'+y+'" width="900" height="'+h+'" rx="8"/>'+T(24,y+20,name,'ll');}
+  function step(x,y,l1,l2,cls,w){w=w||130;var h=52;return '<rect class="step '+(cls||'')+'" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="var(--m-r)" style="rx:calc(var(--m-r)*1px)"/>'+
+    (l2?T(x+w/2,y+22,l1,'anchor')+T(x+w/2,y+40,l2,'anchor'):T(x+w/2,y+31,l1,'anchor'));}
+  function edge(d,cls,tip){var m=d.match(/([\d.]+) ([\d.]+)$/);return '<path class="edge '+(cls||'')+'" d="'+d+'"/>';}
+  function head(x,y,dir,back){var p={r:[-9,-5,-9,5],l:[9,-5,9,5],u:[-5,9,5,9],d:[-5,-9,5,-9]}[dir];return '<polygon class="'+(back?'tipb':'tip')+'" points="'+x+','+y+' '+(x+p[0])+','+(y+p[1])+' '+(x+p[2])+','+(y+p[3])+'"/>';}
+  function badge(x,y,n){return '<circle class="badge" cx="'+x+'" cy="'+y+'" r="11"/><text class="badget" x="'+x+'" y="'+(y+4)+'">'+n+'</text>';}
+  function note(x,y,w,h,lines){var t='';lines.forEach(function(s,i){t+='<text class="nt" x="'+(x+12)+'" y="'+(y+24+i*17)+'">'+s+'</text>';});return '<rect class="note" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="3" transform="rotate(-1.5 '+(x+w/2)+' '+(y+h/2)+')"/><g transform="rotate(-1.5 '+(x+w/2)+' '+(y+h/2)+')">'+t+'</g>';}
+  function el(x,y,s){return T(x,y,s,'el');}
+  function cursor(x,y){return '<path d="M'+x+' '+y+' l0 17 l4.5 -4 l3.5 8 l3 -1.5 l-3.5 -7.5 l6 -.5 z" fill="#111" stroke="#fff" stroke-width="1.2"/>';}
+
+  /* Screen 1 */
+  var s1='<rect class="bg" width="920" height="396"/>'+
+    lane(14,112,'Harvest')+lane(138,112,'IT','b hot')+lane(262,112,'Finance')+
+    step(60,44,'Top up','', '')+
+    note(560,36,190,66,['Pickers\' hours are copied','in by hand. Check HR','headcount first.'])+
+    step(260,168,'Check piece work','')+
+    edge('M190 70 H225 V194 H260')+head(260,194,'r')+el(232,150,'Piece work ready')+
+    step(470,286,'Review shortage','hours','sel',140)+
+    edge('M390 194 H430 V312 H470')+head(470,312,'r')+el(402,244,'Top up done')+
+    '<circle class="handle" cx="610" cy="312" r="5"/>'+'<circle class="handle" cx="470" cy="312" r="5"/>'+
+    '<rect class="ui" x="468" y="244" width="176" height="28" rx="14"/>'+T(481,263,'Edit text','uit')+T(551,263,'Add note','uit')+T(611,263,'Delete','uit')+
+    step(700,286,'Review OT','','fade')+
+    '<rect class="step ghost" x="690" y="172" width="130" height="52" rx="10" style="rx:calc(var(--m-r)*1px)"/>'+T(755,203,'Review OT','anchor')+
+    cursor(808,212)+'<rect class="pill" x="700" y="228" width="132" height="22" rx="11"/>'+T(766,243,'Drop to hand to IT','pillt',1).replace('class="pillt anchor"','class="pillt anchor" style="font-size:12px;font-family:Inter,sans-serif"')+
+    badge(466,232,1)+badge(836,176,2)+badge(758,32,3);
+  document.getElementById('m1').innerHTML=s1;
+
+  /* Screen 2 */
+  var s2='<rect class="bg" width="920" height="380"/>'+
+    lane(14,140,'IT')+lane(166,140,'Finance','b')+
+    step(60,60,'Check piece work','')+
+    edge('M190 86 H220 V240 H250')+head(250,240,'r')+el(228,160,'Top up done')+
+    '<rect class="inp" x="250" y="214" width="170" height="52" rx="10" style="rx:calc(var(--m-r)*1px)"/>'+T(264,245,'Review overt','')+'<rect class="caret" x="361" y="228" width="2" height="24"/>'+
+    '<rect class="step ghost" x="500" y="214" width="150" height="52" rx="10" style="rx:calc(var(--m-r)*1px)"/>'+T(575,245,'+ next step','anchor')+
+    '<path class="edge dash" d="M420 240 H500"/>'+head(500,240,'r')+
+    '<rect class="pill" x="436" y="278" width="170" height="22" rx="11"/>'+T(521,293,'Enter: next step','pillt',1).replace('class="pillt anchor"','class="pillt anchor" style="font-size:12px;font-family:Inter,sans-serif"')+
+    '<circle cx="740" cy="86" r="22" fill="none" stroke="var(--m-acc)" stroke-width="2" opacity=".6"/><circle cx="740" cy="86" r="9" fill="none" stroke="var(--m-acc)" stroke-width="2"/>'+cursor(746,92)+
+    T(740,128,'double-click to add here','el',1)+
+    '<rect class="ui" x="590" y="318" width="240" height="46" rx="8" transform="translate(0 -4)"/>'+T(604,342,'Pasted 3 lines: 3 steps added','uit')+T(604,358,'Check, Top up, Review OT','sub')+
+    badge(264,200,1)+badge(656,208,2)+badge(844,326,3);
+  document.getElementById('m2').innerHTML=s2;
+
+  /* Screen 3 */
+  var s3='<rect class="bg" width="920" height="306"/>'+
+    '<rect class="ui" x="10" y="10" width="900" height="30" rx="8"/>'+T(24,30,'Quote approval','uit')+
+    '<rect class="ui" x="790" y="14" width="110" height="22" rx="11" style="fill:var(--m-accsoft);stroke:var(--m-acc)"/>'+T(845,30,'Export','uit',1)+
+    '<rect class="ui" x="776" y="42" width="134" height="92" rx="8"/>'+T(790,66,'PNG image','uit')+T(790,88,'SVG vector','uit')+T(790,110,'Mermaid (.md)','uit')+
+    lane(50,112,'Sales')+lane(172,112,'Finance','b')+
+    '<rect class="pill" x="30" y="92" width="64" height="28" rx="14"/>'+T(62,111,'Start','pillt',1).replace('class="pillt anchor"','class="pillt anchor" style="font-size:12px;font-family:Inter,sans-serif"')+
+    edge('M94 106 H130')+head(130,106,'r')+
+    step(130,80,'Draft quote','')+
+    edge('M260 106 H240 V228 H280')+head(280,228,'r')+
+    '<polygon class="step" points="350,186 420,228 350,270 280,228"/>'+T(350,226,'Over','anchor')+T(350,242,'$10k?','anchor')+
+    edge('M350 186 V106 H500')+head(500,106,'r')+el(358,150,'No')+
+    edge('M420 228 H500')+head(500,228,'r')+el(452,220,'Yes')+
+    step(500,202,'Sign off','','',130)+
+    step(500,80,'Send quote','to customer','',130)+
+    edge('M565 202 V132')+head(565,132,'u')+el(572,172,'Approved')+
+    edge('M565 254 V276 H195 V132','back')+head(195,132,'u',1)+el(470,272,'Changes needed')+
+    edge('M630 106 H670')+head(670,106,'r')+
+    '<rect class="pill" x="670" y="92" width="64" height="28" rx="14"/>'+T(702,111,'End','pillt',1).replace('class="pillt anchor"','class="pillt anchor" style="font-size:12px;font-family:Inter,sans-serif"')+
+    badge(30,86,1)+badge(278,196,2)+badge(768,26,3);
+  document.getElementById('m3').innerHTML=s3;
+
+  /* skin picker */
+  var notes={
+    paper:'Neutral white lanes, one blue accent, yellow stickies. Reads well in docs and screenshots. Becomes the light theme.',
+    blueprint:'Navy canvas with cyan lines and square corners, like a technical drawing. Becomes the dark theme and suits long working sessions.',
+    marker:'Warm lanes, heavy black outlines and a handwriting font. Looks unfinished on purpose, which makes people more willing to edit.'
+  };
+  var stage=document.getElementById('stage'),nn=document.getElementById('skinnote');
+  function set(s){stage.setAttribute('data-skin',s);nn.textContent=notes[s];[].forEach.call(document.querySelectorAll('.skin'),function(b){b.setAttribute('aria-pressed',b.dataset.s===s?'true':'false');});}
+  [].forEach.call(document.querySelectorAll('.skin'),function(b){b.addEventListener('click',function(){set(b.dataset.s);});});
+  set('paper');
+})();
+</script>

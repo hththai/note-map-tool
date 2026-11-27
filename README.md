@@ -4,6 +4,15 @@ A map of departments, Google Sheets, connected apps and the links between them. 
 
 ![Sheets Ecosystem Map demo](docs/screenshot.png)
 
+## Quick start with your existing (legacy) files
+
+Your old `maps/*.md`, `*.flows.md` and `*.tickets.json` work as they are. Two commands, from this folder:
+
+    ./start.command                          # builds the app if needed, serves it on http://localhost:8000/
+    node scripts/import-legacy.mjs --all     # optional: import every old map into data/ (add --dry-run to only check)
+
+Without the second command, opening a map that has only old files shows an **Import** button that does the same and checks nothing is lost. Your old files are only read, never changed; the old page stays at http://localhost:8000/legacy/. Needs Node (first run builds `app/`) and Python 3.
+
 ## Run locally
 
 Double-click `start.command` (macOS), or in a terminal in this folder:
@@ -22,9 +31,15 @@ Opening `index.html` directly also works, but it can only show the built-in demo
 
 ## Edit
 
-1. Edit `maps/work.md` in any text editor, then refresh the page. Or tap Edit in the page and change the text there.
-2. In the page, press Save (or Cmd/Ctrl+S in the editor). It writes straight to `maps/work.md` and keeps the previous version as `maps/work.md.bak`. This needs `server.py`, which `start.command` runs.
-3. Download .md is still there if you want a separate copy.
+1. Edit `maps/work.md` in any text editor, then refresh the page. Or tap Edit in the page.
+   - **Form** (default): click a sheet, app, section or department name on the map and change it in the side panel. A sheet shows name, owner and criticality, then "Connected to"; link, note and move are under "More". The "+ Sheet", "+ Section", "+ Department" and "+ App" buttons on the map add things, and the new item's name is selected so you can type straight away. Press Enter in a sheet's Name to add the next one below it. Renaming a sheet updates its links and tickets.
+   - **Connected to**: pick a sheet or app from the search box, choose Sends to or Receives from, optionally tap how it is linked (IMPORTRANGE, manual copy, ...), then Add link. Existing links can be re-worded or removed, and a name opens that card.
+   - **Undo / Redo** (buttons or Cmd/Ctrl+Z, Shift+Z) cover form changes. Typing in the Markdown box starts a fresh history.
+   - **Markdown text**: the same file as plain text. Both views stay in sync.
+   - Comments (`<!-- -->`) and unreadable lines are not kept by the form; it asks before the first change if your file has any.
+2. New map: press "+ New map" in the header, enter a title and it creates `maps/<title>.md` (never over an existing file) with one department, one section and one example sheet, and opens it in the form. The drop-down next to it switches between the maps in `maps/`. Both need `server.py`.
+3. In the page, press Save (or Cmd/Ctrl+S in the editor). It writes straight to `maps/work.md` and keeps the previous version as `maps/work.md.bak`. This needs `server.py`, which `start.command` runs.
+4. Download .md is still there if you want a separate copy.
 
 ## Markdown format
 
@@ -57,7 +72,10 @@ Opening `index.html` directly also works, but it can only show the built-in demo
 The Tickets tab shows tickets and projects as a Kanban board (To do, In progress, Blocked, Done) or as a table. Switch with Board / Table; the choice is remembered. Each ticket can be linked to a sheet, a connected app or a whole department, and is drawn as a chip in the map's colours (green sheet, purple app, yellow department).
 
 - A summary at the top shows how many tickets are in each status, and one red line per blocked ticket. Click that line to open the ticket.
-- IDs are date based: `T20261116.001` for a ticket and `P20261116.001` for a project (prefix, the date it was created, then a counter that restarts at 001 each day, separately for T and P). Tickets created before this change keep their old `T-1` style IDs. An ID does not change if you later switch a ticket's type.
+- IDs are date based: `T20261116.001` for a ticket and `P20261116.001` for a project (prefix, the date it was created, then a counter that restarts at 001 each day, separately for T and P). Tickets created before this change keep their old `T-1` style IDs, and those never change.
+  - The ID follows the type: switch a ticket to a Project and `T20261116.001` becomes `P20261116.001` when you Save (the form says "ID will become …" first). The date stays; the number stays too unless it is already taken, then the next free number is used. Items in the project, and flow steps that name the ticket, are updated to the new ID. The old ID is kept as "formerly …", is searchable, and is never given to another ticket.
+  - A project that still has items cannot be switched to another type until its items are moved out.
+  - Check map: the gear beside the map title opens a menu with **Check map…** (and **AI settings…**). It lists tickets whose ID letter does not match their type (for example a Project still called `T…`), including ones in Removed, with a tick box for each. **Repair selected** is one change you can Undo and is only written when you press Save. The type is treated as correct; untick a row if the type is the mistake. The gear shows a red count when there is something to look at.
 - Description: describe what the request is (what is being asked, and by whom) in the Description box under the title. It shows as a short preview on the board card and under the title in the table (hover for the full text), and the search box looks in it too. Notes is still there for anything else.
 - Projects, change requests and features: Type can be Ticket, Project, Change request or Feature. IDs start with `T`, `P`, `C` or `F` (for example `C20261116.001`). Any item that is not a project has a "Part of project" dropdown to attach it to a project.
   - Open a project to see its items, and use "+ Change request", "+ Feature" or "+ Ticket" there to add one already attached. The project card and table row show "3 of 7 items done" and the hours logged on the project and its items. Rejected change requests are not counted.
@@ -90,13 +108,14 @@ The Tickets tab shows tickets and projects as a Kanban board (To do, In progress
   - `tickets-form.js`: ticket drawer form, time log, "Add a ticket" row.
   - `flows-view.js`: Flows tab: swimlane drawing, drag and drop, form editor, loading and saving the flows file.
   - `editor.js`: Markdown editor panel and saving `maps/<map>.md`.
+  - `map-switch.js`: map drop-down and "+ New map" in the header.
   - `main.js`: tab switching and startup (keep last).
 - `maps/demo.md`: example data.
 - `maps/work.md`: your map. Start here.
 - `maps/demo.tickets.json`: example tickets. `maps/work.tickets.json` holds your own.
 - `maps/demo.flows.md`: example flows. `maps/work.flows.md` holds your own (not tracked by git).
 - `server.py`: the local server. It serves the folder and accepts saves to `maps/*.md` and `maps/*.json` only, from this page only, on localhost only.
-- `start.command`: runs `server.py` and opens the browser on macOS.
+- `start.command`: builds the React app if needed, restarts `server.py` (one port, 8000) and opens the browser on macOS. The new app is at `/`, the old page at `/legacy/`.
 test commitlint
 
 ## Flows

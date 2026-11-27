@@ -120,5 +120,6 @@
   App.targetName = targetName; App.today = today; App.newId = newId;
   App.hoursOf = hoursOf; App.fmtH = fmtH; App.projectStats = projectStats; App.statsLine = statsLine;
   App.prettyDate = prettyDate; App.initials = initials; App.ticketStats = ticketStats;
+  App.saveTickets = saveTickets;
   App.changed = changed; App.loadTickets = loadTickets;
 })(App);

@@ -1,0 +1,11 @@
+@import "tailwindcss";
+html, body, #root { height: 100%; margin: 0; }
+body { font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+
+/* Printing the Tickets report: only the report is printed, without its controls */
+@media print {
+  body * { visibility: hidden; }
+  #report, #report * { visibility: visible; }
+  #report { position: absolute; left: 0; top: 0; width: 100%; max-width: none; }
+  #report .no-print { display: none; }
+}

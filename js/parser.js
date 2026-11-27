@@ -8,7 +8,7 @@
       else if (/^(critical|high|medium|med|low)$/i.test(p)) { var c = p.toLowerCase(); crit = (c === 'critical') ? 'high' : (c === 'med' ? 'medium' : c); }
       else det.push(p);
     });
-    return { name: name, key: name.toLowerCase(), kind: kind, url: url, crit: crit, details: det.join(' · '), note: '' };
+    return { name: name, key: name.toLowerCase(), kind: kind, url: url, crit: crit, details: det.join(' · '), parts: det, note: '' };
   }
   function parse(md){
     var out = { title: 'Sheets map', depts: [], apps: [], links: [], warn: [] };
